@@ -20,9 +20,6 @@ if(isset($_POST['usuario'],$_POST['password'])){
     } else {
         header("Location: index.php");
     }
-
-
-
 }
 ?>
 <!DOCTYPE html>

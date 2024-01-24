@@ -13,7 +13,7 @@ session_start();
             header("Location: login.php");
         }
         ?>
-        <a href="cerrarsesion.php"> Cerrar sesión </a>
+        <br><a href="cerrarsesion.php"> Cerrar sesión </a>
     </body>
 </html>
 <?
