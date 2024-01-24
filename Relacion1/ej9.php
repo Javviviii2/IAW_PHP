@@ -3,53 +3,27 @@
 // Intercala código HTML y PHP para familiarizarte con éste último. Utiliza la
 // etiqueta <table> de HTML.
 $asignatura = array(
-    "Servicios en Red e Internet",
-    "Empresa e Iniciativa Emprendedora",
-    "Administración de Sistemas Operativos",
-    "Implantación de Aplicaciones Web",
-    "Administración de Sistemas de Gestión de Base de Datos",
-    "Seguridad y Alta Disponibilidad"
+    ["8:15-9:15","Servicios en Red e Internet"],
+    ["9:15-10:15","Empresa e Iniciativa Emprendedora"],
+    ["10:15-11:15","Administración de Sistemas Operativos"],
+    ["11:45-12:45","Implantación de Aplicaciones Web"],
+    ["12:45-13:45","Administración de Sistemas de Gestión de Base de Datos"],
+    ["13:45-14:45","Seguridad y Alta Disponibilidad"]
 );
-$horas = array(
-    "8:15-9:15",
-    "9:15-10:15",
-    "10:15-11:15",
-    "11:45-12:45",
-    "12:45-13:45",
-    "13:45-14:45"
-);
-
-// Recorremos el array de horas
-foreach ($horas as $asignatura) {
-
-    // Generamos una fila de la tabla
-    echo '<tr>';
-
-    // Añadimos la celda de la hora
-    echo '<td>' . $hora . '</td>';
-
-    // Añadimos la celda de la asignatura
-    echo '<td>' . $asignatura . '</td>';
-
-    // Terminamos la fila
-    echo '</tr>';
+$diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+echo "<table>"; 
+foreach ($diasSemana as $dia) {
+    echo "<th>".$dia."</th>";
+    foreach ($asignatura as $x) {
+        // Generamos una fila de la tabla
+        echo '<tr>';
+        // Añadimos la celda de la hora
+        echo '<td>' . $x[0] .'<br>'. '</td>';
+        // Añadimos las asignaturas
+        echo '<td>' . $x[1]. '</td>';
+        // Terminamos la fila
+        echo '</tr>';
+    }
 }
-
+echo "</table>";
 ?>
-
-<!DOCTYPE html>
-<head></head>
-<body>
-    <table>
-        <tr>
-            <th>Hora</th>
-            <th>Lunes</th>
-            <th>Martes</th>
-            <th>Miercoles</th>
-            <th>Jueves</th>
-            <th>Viernes</th>
-        </tr>
-
-    </table>
-
-</body>
