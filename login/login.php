@@ -1,4 +1,4 @@
-<?php
+<?
 session_start(); 
 
 //aquí se comprueba si el usuario ha insertado un username y password
@@ -9,26 +9,22 @@ session_start();
 //a la parte privada de la aplicación
 //Si el username y contraseña no coincide con test/test usaremos la función header
 //header("Location: index.php"); para ir a la parte pública de la aplicación
-
-if(isset($_POST["usuario"]) && isset($_POST["password"])){
-    $username = $_POST["usuario"];
-    $password = $_POST["password"];
-
-    $password = hash('sha512', $password);
-
-    if ($username == "test" && $password == hash('sha512', "test")) {
-        // validate user
+if(isset($_POST['usuario'],$_POST['password'])){
+    $username=strtolower($_POST['usuario']);
+    $password=$_POST['password'];
+    $password=hash('sha512',$password);
+    $password_test=hash('sha512','test');
+    if ($username == 'test' && $password == $password_test) {
         $_SESSION["username"] = $username;
         header("Location: contenido.php");
-
     } else {
-        // unvalidate user
         header("Location: index.php");
     }
-    exit();
+
+
+
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,15 +34,11 @@ if(isset($_POST["usuario"]) && isset($_POST["password"])){
 
 </head>
 <body>
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST" name="login">
+    <form action="<? echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST" name="login">
 
-        <label>
-            <input type="text" name="usuario" placeholder="Usuario">
-        </label>
-        <label>
-            <input type="password" name="password" placeholder="Password">
-        </label>
-        <input type="submit" value="Aceptar">
+    <input type="text" name="usuario" placeholder="Usuario">
+    <input type="password" name="password" placeholder="Password">
+    <input type="submit" value="Aceptar">
     </form>
 
     <p>¿No tienes cuenta?</p>
