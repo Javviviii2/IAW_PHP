@@ -5,12 +5,11 @@
     </head>
     <body>
         <?php
-            if (isset($_GET["num1"]) and isset($_GET["num2"]) and isset($_GET["operador"])) {
+            if (isset($_GET["num1"],$_GET["num2"],$_GET["operadores"])) {
                 if (is_numeric($_GET["num1"]) and is_numeric($_GET["num2"])) {
+                    $operador=$_GET["operadores"];
                     $num1=$_GET["num1"];
                     $num2=$_GET["num2"];
-                    $operador=$_GET["operador"];
-                    
                     if ($operador == "+") {
                         echo $resultado = $num1 + $num2;
                     } elseif ($operador == "-") {
@@ -22,7 +21,6 @@
                     } else {
                         echo "error";
                     }
-                
                 }
             } else {
                 echo "Error";
