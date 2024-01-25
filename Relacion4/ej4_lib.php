@@ -5,7 +5,7 @@
 // c. maximoArrayInt: Devuelve el máximo del array que se pasa como parámetro.
 
 function generaArrayInt($array_range){
-    $array=array();
+    $array=[];
     for ($i=0; $i <$array_range;$i++) { 
         array_push($array,random_int(0,100));
     }
