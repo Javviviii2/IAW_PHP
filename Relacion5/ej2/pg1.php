@@ -7,3 +7,24 @@
 //        número que no esté comprendido entre 18 y 130, vuelve automáticamente a
 //        la primera página, mostrando el aviso correspondiente.
 ?>
+<?php
+session_start();
+if (isset($_POST['edad'])) {
+    $_SESSION['edad'] = $_POST['edad'];
+}
+;
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <form action="pg2.php" method="post">
+            <label>Edad</label>
+            <input type="number" name="edad"><br>
+            <input type="submit" value="Enviar">
+        </form>
+    </form>
+</body>
+</html>
