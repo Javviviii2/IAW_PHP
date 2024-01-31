@@ -1,10 +1,13 @@
 <?php 
 session_start();
-$nombre=$_SESSION['nombre'];
-if (empty($nombre)) {
-    echo "No se ha introducido ningún nombre.";
-} else {
-    echo "el nombre escrito es: $nombre";
+if (isset($_POST['nombre'])) {
+    $nombre=$_POST['nombre'];
+    if (empty($nombre)) {
+        echo "No se ha introducido ningún nombre.";
+    } else {
+        $_SESSION['nombre']=$nombre;
+        echo "el nombre escrito es: $nombre";
+    }
 }
 ?>
 <!DOCTYPE html>

@@ -9,8 +9,8 @@
 ?>
 <?php
 session_start();
-if (isset($_POST['nombre'])) {
-    $_SESSION['nombre'] = $_POST['nombre'];
+if (isset($_SESSION['nombre'])) {
+    echo "Último nombre usado:". $_SESSION['nombre'];
 }
 ;
 ?>
@@ -21,7 +21,6 @@ if (isset($_POST['nombre'])) {
     </head>
     <body>
         <form action="pg2.php" method="post">
-            <p>Último nombre usado:<?php echo $_SESSION['nombre']; ?></p>
             <label>Nombre</label>
             <input type="text" name="nombre"><br>
             <input type="submit" value="Enviar">
