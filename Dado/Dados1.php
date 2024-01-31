@@ -2,7 +2,7 @@
 /**
  * Dados1.php
  *
- * @author Escriba aquí su nombre
+ * @author Javi
  *
  */
 ?>
@@ -13,7 +13,7 @@
   <title>
     Dos dados.
     if .. elseif ... else ... (1). Sin formularios.
-    Escriba aquí su nombre
+    Javi
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -24,13 +24,25 @@
   <p>Actualice la página para mostrar una nueva tirada.</p>
 
 <?php
+$dado1 = rand(1,6);
+$dado2 = rand(1,6);
 
-print "  <p class=\"aviso\">Ejercicio incompleto</p>\n";
+print "<p>\n";
+print "<img src=./img/$dado1.svg width='200' height='200'>" ;
+print "<img src=./img/$dado2.svg width='200' height='200'>" ;
+print "</p>"; 
+
+// dado mayor
+if ($dado1 == $dado2) {
+  print "<p>Pareja de $dado1";
+} else {
+  print "Sin pareja, el valor más alto es: ". max($dado1,$dado2); 
+}
 
 ?>
 
   <footer>
-    <p>Escriba aquí su nombre</p>
+    <p>Javi</p>
   </footer>
 </body>
 </html>

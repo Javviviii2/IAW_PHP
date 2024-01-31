@@ -1,12 +1,12 @@
 <?php 
 session_start();
-$edad=$_SESSION['edad'];
-if (isset($edad) and is_numeric($edad)){
+if (isset($_POST['edad']) and is_numeric($_POST['edad'])) {
+    $edad= $_POST['edad'];
+    $_SESSION['edad']=$edad;
     if ($edad>18 and $edad<130) {
-        echo $edad;
+        header("Location: pg3.php");
     } else {
-    $aviso="Error";
-    header("Location: pg1.php".$aviso);
+        header("Location: pg1.php");
     }
 }
 ?>

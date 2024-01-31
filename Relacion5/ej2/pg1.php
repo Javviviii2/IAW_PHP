@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Escriba un programa que conste de dos páginas y que solicite una edad.
 //  ● En la primera página se solicita una edad entre 18 y 130 años.
 //  ● La segunda página comprueba si se ha escrito un número entero entre 18 y 130.
@@ -8,11 +9,12 @@
 //        la primera página, mostrando el aviso correspondiente.
 ?>
 <?php
-session_start();
-if (isset($_POST['edad'])) {
-    $_SESSION['edad'] = $_POST['edad'];
+if (isset($_SESSION['edad'])) {
+    if ($_SESSION['edad']<18 || $_SESSION['edad']>130) {
+        print "<p> Error, edad no valida </p>";
+    }
 }
-;
+
 ?>
 <!DOCTYPE html>
 <html>
