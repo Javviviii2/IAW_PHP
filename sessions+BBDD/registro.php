@@ -1,50 +1,49 @@
 <?php
-if (
-    isset($_POST['NombreUsuario']) && 
-    isset($_POST['Contraseña1']) &&
-    isset($_POST['Contraseña2']) 
-    ) {
+if (isset($_POST['NombreUsuario']) && isset($_POST['Contraseña1']) && isset($_POST['Contraseña2'])) {
     $NombreUsuario=$_POST["NombreUsuario"];
     $contraseña1=hash('sha512',$_POST['Contraseña1']);
     $contraseña2=hash('sha512',$_POST['Contraseña2']);
-} if ($contraseña1 == $contraseña2) {
-    // try para manejo de errores
-    try {
-        $host="db";
-        $dbUsername="root";
-        $dbPassword="test";
-        $dbName="Usuarios";
-        //hacer conexión
-        $dbconexion=mysqli_connect($host,$dbUsername,$dbPassword,$dbName);
-        if ($dbconexion->connect_error) {
-            die ;
+    if ($contraseña1 == $contraseña2) {
+        // try para manejo de errores
+        try {
+            $host="db";
+            $dbUsername="root";
+            $dbPassword="test";
+            $dbName="Usuarios";
+            //hacer conexión
+            $dbconexion=mysqli_connect($host,$dbUsername,$dbPassword,$dbName);
+            if ($dbconexion->connect_error) {
+                die ;
+            }
+            // iniciar statement
+            $statement=$dbconexion->stmt_init();
+            // preparar statement
+            $statement->prepare('Select * From usuarios Where usuario = ?');
+            $statement->bind_param('s',$NombreUsuario);
+            //resultado
+            $resultado=$statement->get_result();
+            //ver si existe el usuario
+            if ($resultado->num_rows > 0) {
+                echo "error";
+            } else{
+                // si no existe lo guardo en BBDD. Agregar datos a la BBDD
+                $insertstatement=$dbconexion->stmt_init();
+                echo "Insert Into usuarios(usuario,password) values ($NombreUsuario,$contraseña1)";
+                $insertstatement->prepare("Insert Into usuarios(usuario,password) values (?,?)");
+                $insertstatement->bind_param('ss', $NombreUsuario, $contraseña1);
+                //ejecutar
+                $insertstatement->execute();
+                // cerrar
+                $insertstatement->close();
+            }
+            $statement->close();
+            $dbconexion->close();
+    
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-        // iniciar statement
-        $statement=$dbconexion->stmt_init();
-        // preparar statement
-        $statement->prepare("Select * From usuarios Where usuario = :NombreUsuario");
-        $statement->bind_param('s',':NombreUsuario');
-        //resultado
-        $resultado=$statement->get_result();
-        //ver si existe el usuario
-        if ($resultado->num_rows > 0) {
-            echo "error";
-        } else{
-            // si no existe lo guardo en BBDD. Preparar Statement
-            $statement=$dbconexion->
-        }
-        $statement->close();
-        $dbconexion->close();
-
-    } catch (\Throwable $th) {
-        //throw $th;
     }
-    
-    
-}
-
-
-
+} 
 ?>
 
 

@@ -11,9 +11,39 @@ session_start();
 //header("Location: index.php"); para ir a la parte pública de la aplicación
 if(isset($_POST['usuario'],$_POST['password'])){
     $username=strtolower($_POST['usuario']);
-    $password=$_POST['password'];
-    $password=hash('sha512',$password);
-    $password_test=hash('sha512','test');
+    $password=hash('sha512',$_POST['password']);
+    try {
+        // variables para hacer la conexión a la BBDD
+        $host="db";
+        $dbUsername="root";
+        $dbPassword="test";
+        $dbName="Usuarios";
+        //hacer conexión
+        $dbconexion=mysqli_connect($host,$dbUsername,$dbPassword,$dbName);
+        if ($dbconexion->connect_error) {
+            die ;
+        }
+        // iniciar statement obtener datos BBDD
+        $statement=$dbconexion->stmt_init();
+        // preparar statement
+        $statement->prepare('Select * From usuarios Where usuario = ":NombreUsuario" and password = ":password"');
+        $statement->bind_param(':NombreUsuario, :password',$username,$password );
+        $statement->execute();
+        //resultado
+        $resultado=$statement->get_result();
+        //ver si existe el usuario
+        if ($resultado->num_rows > 0) {
+            header("Location=contenido.php");
+        } else{
+            header("Location=login.php");
+        }
+        $statement->close();
+        $dbconexion->close();
+
+    } catch (\Throwable $th) {
+        //throw $th;
+    }
+
     if ($username == 'test' && $password == $password_test) {
         $_SESSION["username"] = $username;
         header("Location: contenido.php");
