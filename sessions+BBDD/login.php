@@ -9,7 +9,7 @@ session_start();
 //a la parte privada de la aplicación
 //Si el username y contraseña no coincide con test/test usaremos la función header
 //header("Location: index.php"); para ir a la parte pública de la aplicación
-if(isset($_POST['usuario'],$_POST['password'])){
+if(isset($_POST['usuario']) && isset($_POST['password'])){
     $username=strtolower($_POST['usuario']);
     $password=hash('sha512',$_POST['password']);
     try {
@@ -26,29 +26,25 @@ if(isset($_POST['usuario'],$_POST['password'])){
         // iniciar statement obtener datos BBDD
         $statement=$dbconexion->stmt_init();
         // preparar statement
-        $statement->prepare('Select * From usuarios Where usuario = ":NombreUsuario" and password = ":password"');
-        $statement->bind_param(':NombreUsuario, :password',$username,$password );
+        $statement->prepare('Select * From usuarios Where usuario = ? and password = ?');
+        $statement->bind_param('ss',$username,$password );
+        
         $statement->execute();
         //resultado
         $resultado=$statement->get_result();
         //ver si existe el usuario
-        if ($resultado->num_rows > 0) {
-            header("Location=contenido.php");
+        if ($resultado->num_rows == 1) {
+            // guardar usuario en la sessión para que pase a contenido
+            $_SESSION["username"]=$username;
+            header("Location: contenido.php");
         } else{
-            header("Location=login.php");
+            header("Location: login.php");
         }
         $statement->close();
         $dbconexion->close();
 
     } catch (\Throwable $th) {
         //throw $th;
-    }
-
-    if ($username == 'test' && $password == $password_test) {
-        $_SESSION["username"] = $username;
-        header("Location: contenido.php");
-    } else {
-        header("Location: index.php");
     }
 }
 ?>

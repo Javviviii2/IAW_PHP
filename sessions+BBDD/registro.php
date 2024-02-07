@@ -20,6 +20,8 @@ if (isset($_POST['NombreUsuario']) && isset($_POST['Contraseña1']) && isset($_P
             // preparar statement
             $statement->prepare('Select * From usuarios Where usuario = ?');
             $statement->bind_param('s',$NombreUsuario);
+            // ejecutar
+            $statement->execute();
             //resultado
             $resultado=$statement->get_result();
             //ver si existe el usuario
@@ -28,8 +30,7 @@ if (isset($_POST['NombreUsuario']) && isset($_POST['Contraseña1']) && isset($_P
             } else{
                 // si no existe lo guardo en BBDD. Agregar datos a la BBDD
                 $insertstatement=$dbconexion->stmt_init();
-                echo "Insert Into usuarios(usuario,password) values ($NombreUsuario,$contraseña1)";
-                $insertstatement->prepare("Insert Into usuarios(usuario,password) values (?,?)");
+                $insertstatement->prepare('Insert Into usuarios(usuario,password) values (?,?)');
                 $insertstatement->bind_param('ss', $NombreUsuario, $contraseña1);
                 //ejecutar
                 $insertstatement->execute();
