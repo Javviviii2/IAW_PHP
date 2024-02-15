@@ -79,6 +79,7 @@ function modify_user($dni,$nombre,$direccion,$telefono,$dni_old)
     }
 }
 
+// mostrar data de cliente
 function show_data ()
 {
     $dbconexion=conectarDB();
