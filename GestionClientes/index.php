@@ -15,7 +15,7 @@ session_start();
     <div >
       <h1 >GESTCLIENT</h1>
       <h2>Gestión de clientes de CertiBank</h2>
-<?php
+    <?php
     if (isset($_SESSION['username'])) {
       // Borrar cliente
       if (isset($_GET['accion']) && $_GET['accion'] == 'borrar') {
@@ -39,7 +39,7 @@ session_start();
       $dni_old=$_GET['dniAntiguo'];
       modify_user($dni,$nombre,$direccion,$telefono,$dni_old);
       }
-//Listado. Este listado se muestra siempre y hace llamada a BD con la consulta del listado de clientes -->
+      //Listado.
       echo '
       <table>
         <tr>
@@ -85,7 +85,7 @@ session_start();
     }else {
       echo "<h2>No hay usuario en sesión. Salir, por favor";
     }
-        ?>
+    ?>
       </table>
     </div>
     <a href="cerrarsesion.php"><button>Salir</button></a>
