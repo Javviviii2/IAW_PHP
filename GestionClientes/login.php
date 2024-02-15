@@ -1,34 +1,18 @@
 <?
 session_start(); 
+include "lib.php";
 
-//aquí se comprueba si el usuario ha insertado un username y password
-//utiliza la función hash('sha512',$password) para cifrar la contraseña
-//si el username es test y la password cifrada coincide con el hash('sha512',"test")
-//se trata de un usuario válido y debemos proceder a guardar el username en la sesión 
-//y posteriormente usar la función header("Location: contenido.php"); para acceder
-//a la parte privada de la aplicación
-//Si el username y contraseña no coincide con test/test usaremos la función header
-//header("Location: index.php"); para ir a la parte pública de la aplicación
 if(isset($_POST['usuario']) && isset($_POST['password'])){
     $username=strtolower($_POST['usuario']);
     $password=$_POST['password'];
     try {
-        // variables para hacer la conexión a la BBDD
-        $host="db";
-        $dbUsername="root";
-        $dbPassword="test";
-        $dbName="banco";
-        //hacer conexión
-        $dbconexion=mysqli_connect($host,$dbUsername,$dbPassword,$dbName);
-        if ($dbconexion->connect_error) {
-            die ;
-        }
+        //hacer conexión base de datos
+        $dbconexion=conectarDB();
         // iniciar statement obtener datos BBDD
         $statement=$dbconexion->stmt_init();
         // preparar statement
         $statement->prepare('Select * From usuarios Where usuario = ? and password = ?');
         $statement->bind_param('ss',$username,$password );
-        
         $statement->execute();
         //resultado
         $resultado=$statement->get_result();
@@ -36,13 +20,13 @@ if(isset($_POST['usuario']) && isset($_POST['password'])){
         if ($resultado->num_rows == 1) {
             // guardar usuario en la sessión para que pase a contenido
             $_SESSION["username"]=$username;
-            header("Location: check.php");
+            header("Location: index.php");
         } else{
             header("Location: login.php");
         }
+        
         $statement->close();
-        $dbconexion->close();
-
+        mysqli_close($dbconexion);
     } catch (\Throwable $th) {
         //throw $th;
     }

@@ -1,63 +1,91 @@
 <?php
-function if_exist_user($user_dni) {
-    if (isset($_GET['accion'])) { // Check if 'accion' parameter exists in GET request
-        $host = "db";
-        $dbUsername = "root";
-        $dbPassword = "test";
-        $dbName = "banco";
+// conectarse a la base de datos
+function conectarDB() 
+{
+    $host="db";
+    $dbUsername="root";
+    $dbPassword="test";
+    $dbName="banco";
+    $dbconexion = mysqli_connect($host, $dbUsername, $dbPassword, $dbName);
+    // Comprobar si hay errores de conexión
+    if (!$dbconexion) {
+        echo "Error al conectar a la base de datos: " . mysqli_connect_error();
+        return false;
+    }
+    // Devolver la conexión a la base de datos
+    return $dbconexion;
+}
 
-        // Connect to the database
-        $dbconexion = mysqli_connect($host, $dbUsername, $dbPassword, $dbName);
+// Comprobar si existe usuario
+function exist_user($user_dni) 
+{
+    $dbconexion = conectarDB(); // Connect to the database
+    $check_user=$dbconexion->stmt_init();
+    $check_user->prepare("SELECT * FROM cliente WHERE dni=?");
+    $check_user->bind_param('s',$user_dni);
+    $check_user->execute();
+    $resultados=$check_user->get_result();
+    return $resultados->num_rows > 0; //existe el usuario
+    $check_user->close();
+    $dbconexion->close();
+}
 
-        // Check for connection errors
-        if (!$dbconexion) {
-            die("Connection failed: " . mysqli_connect_error());
-        }
+// borrar usuario
+function delete_user($dni)
+{
+    $dbconexion=conectarDB();
+    $delete_user=$dbconexion->stmt_init();
+    $delete_user->prepare('delete from cliente where dni = ?');
+    $delete_user->bind_param('i',$dni);
+    $delete_user->execute();
+    $delete_user->close();
+}
 
-        // Prepare the query with placeholder for safety
-        $check_query = "SELECT COUNT(*) FROM cliente WHERE dni=$user_dni";
-
-        // Prepare the statement for safe query execution
-        $stmt = mysqli_prepare($dbconexion, $check_query);
-
-        /*
-        // Check for statement preparation errors
-        if (!$stmt) {
-            die("Statement preparation failed: " . mysqli_error($dbconexion));
-        }
-
-        // Bind parameter to the prepared statement
-        mysqli_stmt_bind_param($stmt, "s", ""); // Bind empty string for placeholder
-        */
-
-        // Execute the prepared statement
-        mysqli_stmt_execute($stmt);
-
-        // Get the result
-        $result = mysqli_stmt_get_result($stmt);
-
-        // Check for errors accessing the result
-        if (!$result) {
-            die("Result retrieval failed: " . mysqli_stmt_error($stmt));
-        }
-
-        // Fetch the count (assuming you only need the existence check)
-        $row = mysqli_fetch_assoc($result);
-        $count = $row['COUNT(*)'];
-
-        if ($count > 0) {
-           true;
+//añadir un usuario
+function add_user ($dni,$nombre,$direccion,$telefono)
+{
+    if (isset($dni) && isset($nombre) && isset($direccion) && isset($telefono)) {
+        if (!exist_user($dni)) {
+            $dbconexion=conectarDB();
+            $insertar_user=$dbconexion->stmt_init();
+            $insertar_user->prepare('Insert Into cliente(dni,nombre,direccion,telefono) values (?,?,?,?)');
+            $insertar_user->bind_param('ssss',$dni,$nombre,$direccion,$telefono);
+            $insertar_user->execute();
+            $insertar_user->close();
         } else {
-            false;
+            echo "El usuario con DNI: ".$dni." ya existe";
         }
-
-        // Close resources
-        mysqli_stmt_close($stmt);
-        mysqli_close($dbconexion);
+    } else {
+        header("Location: index.php");
     }
 }
 
-// Immediately call the function if 'accion' exists
+//modificar usuario
+function modify_user($dni,$nombre,$direccion,$telefono,$dni_old)
+{
+    if (isset($dni) && isset($nombre) && isset($direccion) && isset($telefono) && isset($dni_old)) {
+        if (!exist_user($dni)) {
+            $dbconexion=conectarDB();
+            $modify_user=$dbconexion->stmt_init();
+            $modify_user->prepare("Update cliente Set dni=?,nombre=?,direccion=?,telefono=? Where dni=?");
+            $modify_user->bind_param("sssss",$dni,$nombre,$direccion,$telefono,$dni_old);
+            $modify_user->execute();
+            $modify_user->close();
+        } else {
+            echo "El usuario con DNI: ".$dni." ya existe";
+        }
+    } else {
+        header("Location: index.php");
+    }
+}
 
-
+function show_data ()
+{
+    $dbconexion=conectarDB();
+    $statement=$dbconexion->stmt_init();
+    $statement->prepare("Select * from cliente");
+    $statement->execute();
+    $resultado=$statement->get_result();
+    return $resultado;
+}
 ?>
