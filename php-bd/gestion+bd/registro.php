@@ -1,4 +1,5 @@
 <?php
+include "lib.php";
 if (isset($_POST['NombreUsuario']) && isset($_POST['Contraseña1']) && isset($_POST['Contraseña2'])) {
     $NombreUsuario=$_POST["NombreUsuario"];
     $contraseña1=hash('sha512',$_POST['Contraseña1']);
