@@ -20,7 +20,7 @@ session_start();
       // Borrar cliente
       if (isset($_GET['accion']) && $_GET['accion'] == 'borrar') {
         $dni=$_GET['dni'];
-        delete_user($dni);
+        delete_client($dni);
       }
       // Añadir cliente
       if (isset($_GET['accion']) && $_GET['accion'] == 'crear') {
@@ -28,7 +28,7 @@ session_start();
         $nombre=$_GET['nombre'];
         $direccion=$_GET['direccion'];
         $telefono=$_GET['telefono'];
-        add_user($dni,$nombre,$direccion,$telefono);
+        add_client($dni,$nombre,$direccion,$telefono);
       }
       // Modificar cliente
       if (isset($_GET['accion']) && $_GET['accion'] == 'modificar') {
@@ -37,7 +37,7 @@ session_start();
       $direccion=$_GET['direccion'];
       $telefono=$_GET['telefono'];
       $dni_old=$_GET['dniAntiguo'];
-      modify_user($dni,$nombre,$direccion,$telefono,$dni_old);
+      modify_client($dni,$nombre,$direccion,$telefono,$dni_old);
       }
       //Listado.
       echo '
