@@ -41,7 +41,7 @@ function exist_user($NombreUsuario)
     $check_user->bind_param('s',$NombreUsuario);
     $check_user->execute();
     $resultado=$check_user->get_result();
-    return $resultado->num_rows > 0; //existe el usuario
+    return $resultado->num_rows > 0; // return si el resultado es > 0, es decir, que existe el usuario
     $check_user->close();
     $dbconexion->close();
 }
