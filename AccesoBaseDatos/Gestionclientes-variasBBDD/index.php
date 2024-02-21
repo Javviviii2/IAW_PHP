@@ -83,7 +83,7 @@ session_start();
           </tr>";
         }
     }else {
-      echo "<h2>No hay usuario en sesión. Salir, por favor";
+      echo "<h2>No hay usuario en sesión. Salir, por favor</h2>";
     }
     ?>
       </table>
