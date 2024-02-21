@@ -65,9 +65,9 @@ session_start();
         while ($registro=$resultado->fetch_assoc()) {
         echo "<tr>
             <td>".$registro['dni']." </td>
-            <td>". $registro['nombre']." </td>
-            <td>". $registro['direccion']." </td>
-            <td>". $registro['telefono']." </td>
+            <td>".$registro['nombre']." </td>
+            <td>".$registro['direccion']." </td>
+            <td>".$registro['telefono']." </td>
             <td>
               <a href=\"modificar.php?&dni=". $registro['dni'] ."&nombre=". $registro['nombre'] ."&direccion=". $registro['direccion'] . "&telefono=". $registro['telefono']." \">
                 <button >Modificar</button>
